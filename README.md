@@ -1,12 +1,14 @@
-# Widify
-Widify is a chrome extension that allows you to utilize the full width of your wide or ultrawide monitor.
+# :: Widify
+<p>Widify is a chrome extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
 
 
 Currently supports:
-Amazon.com
-Gamestop.com
-GitHub.com
-Reddit.com
-Slickdeals.net
-Target.com
-Walmart.com
+
+<ul>
+  <li>Amazon.com</li>
+  <li>Gamestop.com</li>
+  <li>GitHub.com</li>
+  <li>Reddit.com</li>
+  <li>Slickdeals.net</li>
+  <li>Walmart.com</li>
+</ul>
