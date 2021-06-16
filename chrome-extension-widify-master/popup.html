@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head><title>Widify</title><style>
+:root {
+  --color1: #e8e9ed;
+  --color2: #8D8BA7;
+  --color3: #13d7db;
+  --color4: #4BEFC7;
+  --color5: #4BEFC7;
+  --color6: #F37C7A;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ol {
+  list-style: none;
+}
+
+label {
+  cursor: pointer;
+}
+
+[type="checkbox"] {
+  position: absolute;
+  left: -9999px;
+}
+
+body {
+	font-size: 16px;
+	font-family: "Arial", serif;
+	letter-spacing: 5px;
+	font-weight: bolder;
+  overflow:hidden;
+    position:relative;
+}
+button { letter-spacing: 5px; }
+
+h1 {
+	font-size: 2rem;
+	text-align: center;
+}
+
+.switches {
+	max-width: 500px;
+	width: 100%;
+	margin: auto 0;
+	color: var(--color3);
+	background: white;
+}
+
+.switches li:not(:last-child) {
+	border-bottom: 1px solid var(--color1);
+}
+
+.switches li::before {
+	display: none;
+}
+
+.switches label {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 15px;
+}
+
+.switches span:last-child {
+	position: relative;
+	width: 50px;
+	height: 26px;
+	border-radius: 15px;
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+	background: var(--color6);
+	transition: all 0.3s;
+}
+
+.switches span:last-child::before,
+.switches span:last-child::after {
+	content: "";
+	position: absolute;
+}
+
+.switches span:last-child::before {
+	left: 1px;
+	top: 1px;
+	width: 24px;
+	height: 24px;
+	background: var(--color1);
+	border-radius: 50%;
+	z-index: 1;
+	transition: transform 0.3s;
+}
+
+.switches span:last-child::after {
+	top: 50%;
+	right: 8px;
+	width: 12px;
+	height: 12px;
+	transform: translateY(-50%);
+	background: url(../images/uncheck-switcher.svg);
+	background-size: 12px 12px;
+}
+
+.switches [type="checkbox"]:checked + label span:last-child {
+	background: var(--color4);
+}
+
+.switches [type="checkbox"]:checked + label span:last-child::before {
+	transform: translateX(24px);
+}
+
+.switches [type="checkbox"]:checked + label span:last-child::after {
+	  width: 14px;
+	  height: 14px;
+	  left: 8px;
+	  background-image: url(../images/checkmark-switcher.svg);
+	  background-size: 14px 14px;
+}
+
+.save {
+	height: 50px;
+	color: var(--color4);
+	font-weight: bold;
+	font-size: 18px;
+	background: white;
+	cursor: pointer;
+	width: 100%;
+	border: 0px;
+}
+
+.save:hover {
+	background: var(--color4);
+	color: white;
+	cursor: pointer;
+}
+
+.slide {
+  background-color: var(--color4);
+  padding: 5px;
+  transition: .5s cubic-bezier(0, 1, 0.5, 1);
+  transform: translateY(0);
+  height: 50px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+	font-size: 18px;
+}
+
+.slide-up {
+  transform: translateY(-100%);
+}
+</style>
+</head>
+<body style="display: flex; flex:1 1 auto; flex-direction: column; width: 250px">
+<ol class="switches">
+  <li>
+    <input type="checkbox" id="amazon">
+    <label for="amazon">
+      <span>Amazon</span>
+      <span></span>
+    </label>
+  </li>
+  <li>
+    <input type="checkbox" id="gamestop">
+    <label for="gamestop">
+      <span>Gamestop</span>
+      <span></span>
+    </label>
+  </li>
+    <li>
+    <input type="checkbox" id="github">
+    <label for="github">
+      <span>GitHub</span>
+      <span></span>
+    </label>
+  </li>
+      <li>
+    <input type="checkbox" id="reddit">
+    <label for="reddit">
+      <span>Reddit</span>
+      <span></span>
+    </label>
+  </li>
+        <li>
+    <input type="checkbox" id="slickdeals">
+    <label for="slickdeals">
+      <span>Slickdeals</span>
+      <span></span>
+    </label>
+  </li>
+        <li>
+    <input type="checkbox" id="target">
+    <label for="target">
+      <span>Target</span>
+      <span></span>
+    </label>
+  </li>
+        <li>
+    <input type="checkbox" id="walmart">
+    <label for="walmart">
+      <span>Walmart</span>
+      <span></span>
+    </label>
+  </li>
+  <li style="overflow: hidden; height: 50px">
+  <button id="save" class="save">S A V E</button>
+  <div class="slide">S A V E D !</div>
+  </li>
+  <!-- more list items here -->
+</ol>
+
+
+
+<script type="text/javascript" src="popup.js"></script>
+</body>
+
+</html>
