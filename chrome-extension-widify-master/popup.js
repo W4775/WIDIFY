@@ -22,7 +22,7 @@ document.addEventListener(
         false
       );
     }
-
+if (storage.get(["widifySettings"])) {
     storage.get(["widifySettings"], function (result) {
       var savedSettings = JSON.parse(
         JSON.stringify(result.widifySettings)
@@ -34,8 +34,10 @@ document.addEventListener(
         }
       }
     });
+}
   },
   false
+  
 );
 
 function saveSettings() {
