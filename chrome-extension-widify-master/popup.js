@@ -22,19 +22,22 @@ document.addEventListener(
         false
       );
     }
-if (storage.get(["widifySettings"])) {
+	
     storage.get(["widifySettings"], function (result) {
-      var savedSettings = JSON.parse(
-        JSON.stringify(result.widifySettings)
-      ).split("|");
-      for (var setting of savedSettings) {
-        var value = setting.split(":");
-        if (document.getElementById(value[0])) {
-          document.getElementById(value[0]).checked = true;
-        }
-      }
+		result = JSON.stringify(result.widifySettings)
+		if(result) {
+		  var savedSettings = JSON.parse(
+			result
+		  ).split("|");
+		  for (var setting of savedSettings) {
+			var value = setting.split(":");
+			if (document.getElementById(value[0])) {
+			  document.getElementById(value[0]).checked = true;
+			}
+		  }
+		}
     });
-}
+
   },
   false
   
