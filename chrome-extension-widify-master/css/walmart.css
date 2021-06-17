@@ -9,3 +9,10 @@
 #categoryContainer {
 	max-width: 98vw !important;
 }
+
+.MultiLinkPOVModule .ClickThroughImage {
+    position: absolute !important;
+    max-width: none !important;
+    height: 100% !important;
+    width: auto !important;
+}
