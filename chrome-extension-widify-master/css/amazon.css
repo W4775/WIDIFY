@@ -1,9 +1,17 @@
+#desktop-grid-1-D2 {
+	background: white;
+}
+
 #gw-card-layout {
 	max-width: none !important;
 	justify-content: center;
 }
 
 #gw-content-grid {
+	max-width: none !important;
+}
+
+#gw-card-layout>.gw-col {
 	max-width: none !important;
 }
 
