@@ -1,0 +1,33 @@
+._3umLRC {
+	max-width: none !important;
+	}
+
+._3f26d2 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+	}
+	
+._3f26d2 li {
+	margin: 0px !important;
+	padding: 15px;
+	width: calc(50% - 30px);
+}
+
+._3f26d2>li:before {
+	margin-bottom: 16px !important;
+    border-top: 1px solid #e6e6e6 !important;
+    position: relative !important;
+    height: 0 !important;
+    display: block !important;
+    content: '' !important;
+    flex: 0 0 100% !important;
+}
+
+._2LNCnO._3aQ08V {
+	height: 100% !important;
+}
+
+._2hDRg8 {
+	text-align: center !important;
+    padding-left: 25% !important;
+}
