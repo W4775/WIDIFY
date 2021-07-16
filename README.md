@@ -6,8 +6,10 @@ Currently supports:
 
 <ul>
   <li>Amazon.com</li>
+  <li>Cars.com</li>
   <li>Gamestop.com</li>
   <li>GitHub.com</li>
+  <li>Hotels.com</li>
   <li>Reddit.com</li>
   <li>Slickdeals.net</li>
   <li>Walmart.com</li>
@@ -27,5 +29,21 @@ Currently supports:
 ![Slickdeals-after](https://user-images.githubusercontent.com/31900031/122291334-b7596b00-cec2-11eb-9405-e9a3797d70be.jpeg)
   
 </div>
+
+
+# Version History
+0.4.0
+Added support for Cars.com and Hotels.com
+Major CSS updates for amazon
+Added dark mode
+
+0.3.0
+Updated amazon.css and walmart.css to fix display issues
+
+0.2.0
+Updated popup.js to fix issue with saving settings locally
+
+0.1.0 
+Initial Release
 
 
