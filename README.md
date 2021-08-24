@@ -1,6 +1,8 @@
 # :: Widify
 <p>Widify is a chrome extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
 
+https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc
+
 
 Currently supports:
 
