@@ -1,0 +1,11 @@
+.ytp-big-mode {
+    height: 100vh !important;
+    width: 100vw !important;
+}
+
+.ytp-big-mode>.html5-video-container>.video-stream {
+    height: calc(100vh * 2) !important;
+    width: calc(100vw * 1.4) !important;
+    left: calc(100vw * -0.2) !important;
+    top: calc(100vh * -0.2) !important;
+}

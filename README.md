@@ -1,8 +1,6 @@
 # :: Widify
-<p>Widify is a chrome extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
 
-https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc
-
+<p><a src="https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc">Widify</a> is a chrome extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
 
 Currently supports:
 
@@ -12,9 +10,12 @@ Currently supports:
   <li>Gamestop.com</li>
   <li>GitHub.com</li>
   <li>Hotels.com</li>
+  <li>Netflix.com</li>
   <li>Reddit.com</li>
   <li>Slickdeals.net</li>
+  <li>Target.com</li>
   <li>Walmart.com</li>
+  <li>Youtube.co,</li>
 </ul>
 <div>
   
@@ -32,8 +33,14 @@ Currently supports:
   
 </div>
 
-
 # Version History
+
+0.5.0
+Added search feature
+Added AUTO option
+Added support for Youtube (Full screen Only)
+Added support for Netflix (Full screen Only)
+
 0.4.0
 Added support for Cars.com and Hotels.com
 Major CSS updates for amazon
@@ -45,7 +52,5 @@ Updated amazon.css and walmart.css to fix display issues
 0.2.0
 Updated popup.js to fix issue with saving settings locally
 
-0.1.0 
+0.1.0
 Initial Release
-
-

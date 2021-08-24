@@ -1,68 +1,59 @@
-var supportedSites = {
-  "amazon.com": "amazon.css",
-  "gamestop.com": "gamestop.css",
-  "github.com": "github.css",
-  "reddit.com": "reddit.css",
-  "slickdeals.net": "slickdeals.css",
-  "target.com": "target.css",
-  "walmart.com": "walmart.css",
-};
-
-chrome.webNavigation.onCommitted.addListener(
-  function (e) {
+chrome.webNavigation.onCommitted.addListener(function (e) {
+  if (e.frameId == 0) {
     chrome.tabs.query(
       {
         active: true,
-        lastFocusedWindow: true,
+        currentWindow: true,
       },
       function (tabs) {
-        tabCheck(tabs[0]);
+        var tab = tabs[0];
+        if (tab && tab.url) {
+          var tempUrl = new URL(tab.url);
+          var baseDomain = tempUrl.hostname
+            .substring(0, tempUrl.hostname.length - 4)
+            .replace("www.", "");
+          settingsCheck(baseDomain, e.tabId);
+        }
       }
     );
-  },
-  {
-    url: [
-      { hostSuffix: "amazon.com" },
-      { hostSuffix: "gamestop.com" },
-      { hostSuffix: "github.com" },
-      { hostSuffix: "reddit.com" },
-      { hostSuffix: "slickdeals.net" },
-      { hostSuffix: "target.com" },
-      { hostSuffix: "walmart.com" },
-      { hostSuffix: "slickdeals.net" },
-    ],
   }
-);
+});
 
-function tabCheck(tab) {
-  for (var site in supportedSites) {
-    if (tab.url.indexOf(site) != -1) {
-      settingsCheck(site, tab);
-    }
-  }
-}
-
-function settingsCheck(site, tab) {
+function settingsCheck(baseDomain, tabId) {
   chrome.storage.local.get(["widifySettings"], function (result) {
-    var savedSettings = JSON.parse(JSON.stringify(result.widifySettings)).split(
-      "|"
-    );
-    for (var setting of savedSettings) {
-      var value = setting.split(":");
-      if (site && value[0] && site.indexOf(value[0]) != -1) {
-        widify(supportedSites[site], tab.id);
+    if (result != {} && result.widifySettings) {
+      var savedSettings = JSON.parse(
+        JSON.stringify(result.widifySettings)
+      ).split("|");
+
+      for (var setting of savedSettings) {
+        var settingKey = setting.split(":");
+        if (settingKey[0] === "auto") {
+          chrome.scripting.executeScript({
+            target: {
+              tabId: tabId,
+            },
+            files: ["content.js"],
+          });
+        }
+
+        if (settingKey[0] === baseDomain) {
+          widify(baseDomain, tabId);
+        }
       }
     }
   });
 }
 
-function widify(siteCSS, tabId) {
+function widify(baseDomain, tabId) {
   chrome.scripting.insertCSS({
-    files: ["/css/" + siteCSS],
-    target: { tabId: tabId },
+    files: ["/css/" + baseDomain + ".css"],
+    target: {
+      tabId: tabId,
+    },
   });
 
-  writeLog("Applied " + siteCSS + " to tab " + tabId);
+  writeLog("Applied " + baseDomain + ".css to tab " + tabId);
 }
 
 function writeLog(msg) {

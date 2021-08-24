@@ -3,6 +3,8 @@ var storage = chrome.storage.local;
 document.addEventListener(
   "DOMContentLoaded",
   function () {
+    getOptions();
+
     var checkButton = document.getElementById("save");
     checkButton.addEventListener(
       "click",
@@ -22,26 +24,81 @@ document.addEventListener(
         false
       );
     }
-	
-    storage.get(["widifySettings"], function (result) {
-		result = JSON.stringify(result.widifySettings)
-		if(result) {
-		  var savedSettings = JSON.parse(
-			result
-		  ).split("|");
-		  for (var setting of savedSettings) {
-			var value = setting.split(":");
-			if (document.getElementById(value[0])) {
-			  document.getElementById(value[0]).checked = true;
-			}
-		  }
-		}
-    });
 
+    var allOptionToggle = document.getElementById("allOptionToggle");
+    var filterOptions = document.getElementById("filterOptions");
+    allOptionToggle.addEventListener(
+      "click",
+      function () {
+        filterOptions.checked = true;
+        alert(filterOptions.checked);
+      },
+      false
+    );
+
+    var filterOption = document.getElementById("filterInput");
+    filterOption.addEventListener(
+      "keyup",
+      function () {
+        filterOutOptions();
+      },
+      false
+    );
   },
   false
-  
 );
+
+function getOptions() {
+  const url = chrome.runtime.getURL("data/options.json");
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      for (const site of data.sites) {
+        setOptions(site);
+      }
+      storage.get(["widifySettings"], function (result) {
+        if (result != {} && result.widifySettings) {
+          var savedSettings = JSON.parse(
+            JSON.stringify(result.widifySettings)
+          ).split("|");
+          for (var setting of savedSettings) {
+            var value = setting.split(":");
+            if (document.getElementById(value[0])) {
+              document.getElementById(value[0]).checked = true;
+            }
+          }
+        }
+      });
+    })
+    .catch(console.error);
+}
+
+function setOptions(site) {
+  var siteName = site.name.substring(0, site.name.length - 4);
+  var ol = document.getElementById("optionsList");
+
+  var li = document.createElement("LI");
+  li.className = "option";
+
+  var chkBox = document.createElement("INPUT");
+  chkBox.setAttribute("type", "checkbox");
+  chkBox.setAttribute("id", siteName);
+
+  var label = document.createElement("label");
+  label.htmlFor = siteName;
+
+  var span1 = document.createElement("span");
+  span1.innerHTML = siteName.toUpperCase();
+
+  var span2 = document.createElement("span");
+
+  label.appendChild(span1);
+  label.appendChild(span2);
+  li.appendChild(chkBox);
+  li.appendChild(label);
+  ol.appendChild(li);
+}
 
 function saveSettings() {
   var settings = "";
@@ -55,7 +112,9 @@ function saveSettings() {
   }
 
   storage.set(
-    { widifySettings: (settings = settings.slice(0, -1)) },
+    {
+      widifySettings: (settings = settings.slice(0, -1)),
+    },
     function () {
       toggleSlider();
     }
@@ -75,5 +134,27 @@ function hideSlider() {
   slide = document.querySelector(".slide");
   if (slide.classList.contains("slide-up")) {
     slide.classList.remove("slide-up");
+  }
+}
+
+function filterOutOptions() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById("filterInput");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("optionsList");
+  li = ul.getElementsByTagName("li");
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("label")[0];
+    if (a) {
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
   }
 }
