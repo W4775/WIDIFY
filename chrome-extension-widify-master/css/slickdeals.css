@@ -1,0 +1,10 @@
+.varwidth #topwrapper,
+.varwidth .top_userbar_container {
+	width: 100% !important;
+	max-width: none !important;
+}
+
+#deal_list_featured,
+#deal_list {
+	width: 100% !important;
+}

@@ -1,10 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "WIDIFY",
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": true
-  },
+  "name": "Widify",
   "action": {
     "default_icon": {
       "16": "images/icon16.png",
@@ -12,7 +8,9 @@
       "38": "images/icon38.png",
       "48": "images/icon48.png",
       "128": "images/icon128.png"
-    }
+    },
+    "default_title": "Widify",
+    "default_popup": "popup.html"
   },
   "icons": {
     "16": "images/icon16.png",
@@ -21,22 +19,21 @@
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
-  "version": "0.7.0",
+  "version": "0.5.0",
   "description": "Use all the space!",
   "permissions": [
     "scripting",
-    "contextMenus",
     "webNavigation",
     "storage",
     "activeTab"
   ],
-  "host_permissions": ["*://*/*"],
-  "web_accessible_resources": [
-    {
-      "resources": ["data/options.json"],
-      "matches": ["<all_urls>"]
-    }
+  "host_permissions": [
+    "*://*/*"
   ],
+  "web_accessible_resources": [{
+    "resources": ["data/options.json"],
+    "matches": ["<all_urls>"]
+  }],
   "background": {
     "service_worker": "background.js"
   }

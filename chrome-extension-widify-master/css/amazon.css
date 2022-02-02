@@ -1,0 +1,190 @@
+:root {
+	--max-width: none;
+}
+
+@media (min-width: 1500px) {
+
+	/* ----- Home Page - Start -----*/
+	#desktop-grid-1-D2 {
+		background: white;
+	}
+
+	#gw-card-layout {
+		max-width: var(--max-width) !important;
+		justify-content: center;
+	}
+
+	#gw-content-grid {
+		max-width: var(--max-width) !important;
+	}
+
+	#gw-card-layout>.gw-col {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Home Page - End ----- */
+
+
+	/* ----- Product Results - Start ----- */
+	.s-desktop-width-max {
+		max-width: var(--max-width) !important;
+	}
+
+	.s-border-bottom {
+		min-height: 450px !important;
+	}
+
+	.sg-col-4-of-20 {
+		max-width: var(--max-width) !important;
+	}
+
+	.sg-col-16-of-20 {
+		max-width: var(--max-width) !important;
+	}
+
+	.sg-row.s-opposite-dir {
+		margin: 0px !important;
+	}
+
+	.s-desktop-content>.nav-ewc-persistent-hover.nav-ewc-compact-view.a-js .sg-col-16-of-20 {
+		width: 80% !important;
+	}
+
+	.s-desktop-content>.nav-ewc-persistent-hover.nav-ewc-compact-view.a-js .sg-col-4-of-20 {
+		width: 20% !important;
+		padding-left: 25px
+	}
+
+	/* ----- Product Results - End ----- */
+
+	/* ----- Amazon Basics - Start ----- */
+	.style__hero__pgILN {
+		max-width: var(--max-width) !important;
+	}
+
+	.stores-container {
+		max-width: var(--max-width) !important;
+	}
+
+	.Header__left__3CRg_.Header__sticky__2HiBp .Header__navArea__2dJRo {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Amazon Basics - End ----- */
+
+	/* ----- Customer Service - Start ----- */
+	.csg-inner,
+	.ss-landing-container {
+		margin: 10px !important;
+		max-width: none !important;
+	}
+
+	.ss-landing-container-wide {
+		margin: 10px !important;
+		max-width: none !important;
+	}
+
+	/* ----- Customer Service - End ----- */
+
+	/* ----- Whole Foods - Start ----- */
+	.alm-storefront-container-desktop {
+		max-width: var(--max-width) !important;
+	}
+
+	.alm-storefront-reserved-desktop {
+		max-width: var(--max-width) !important;
+	}
+
+	.alm-storefront-tcg-container-desktop {
+		max-width: var(--max-width) !important;
+	}
+
+	#dp {
+		max-width: var(--max-width) !important;
+	}
+
+	.a-row .a-span6,
+	.a-ws .a-row .a-ws-span6 {
+		width: 100% !important;
+	}
+
+	.askWidgetQuestions {
+		max-width: var(--max-width) !important;
+	}
+
+	.askDPSearchViewContent {
+		max-width: var(--max-width) !important;
+	}
+
+	.cm_cr_grid_center_right {
+		max-width: var(--max-width) !important;
+	}
+
+	.review {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Whole Foods - End ----- */
+
+	/* ----- Gift Cards - Start ----- */
+	.bxc-grid__container.bxc-grid__container--width-1024 {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Gift Cards - End ----- */
+
+	/* ----- Best Sellers - Start ----- */
+	#zg .zg_homeWidget {
+		width: 100% !important;
+	}
+
+	/* ----- Best Sellers - End ----- */
+
+	/* ----- Pet Supplies - Start ----- */
+	#sobe_d_b_2-container {
+		max-width: var(--max-width) !important;
+	}
+
+	.bxc-grid__container.bxc-grid__container--width-1500 {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Pet Supplies - End ----- */
+
+	/* ----- Amazon Home - Start ----- */
+	.bxc-grid__container.bxc-grid__container--width-1366 {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Amazon Home - End ----- */
+
+	/* ----- Home Improvement - Start ----- */
+	.bxc-grid__container.bxc-grid__container--width-1280 {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Home Improvement - End ----- */
+
+	/* ----- Personal Recommended - Start ----- */
+	#ys-center .ysh-cards-wrapper {
+		max-width: var(--max-width) !important;
+		width: 100% !important;
+	}
+
+	/* ----- Personal Recommended - End ----- */
+
+	/* ----- #FoundItOnAmazon - Start ----- */
+	.glimpse-fixed-grid-align,
+	.glimpse-full-col {
+		width: 100% !important;
+	}
+
+	/* ----- #FoundItOnAmazon - End ----- */
+
+	/* ----- Find a Gift - Start ----- */
+	html.nav-ewc-persistent-hover #reactApp {
+		max-width: var(--max-width) !important;
+	}
+
+	/* ----- Find a Gift - End ----- */
+}
