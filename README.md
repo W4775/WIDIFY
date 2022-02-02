@@ -1,7 +1,9 @@
 # :: Widify
 
-<p><a href="https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc">Widify</a> is a chrome
-  extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
+<p>
+  <a href="https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc">Widify</a> is a chrome
+    extension that allows you to utilize the full width of your wide or ultrawide monitor.
+</p>
 
 Currently supports:
 
@@ -18,40 +20,47 @@ Currently supports:
   <li>Walmart.com</li>
   <li>Youtube.com</li>
 </ul>
+
 <div>
-
-![Widify-menu](https://user-images.githubusercontent.com/31900031/122291341-b9bbc500-cec2-11eb-8500-5295c3ae829a.jpeg)
-
+  ![Widify-menu](https://user-images.githubusercontent.com/31900031/122291341-b9bbc500-cec2-11eb-8500-5295c3ae829a.jpeg)
 </div>
 <div>
-
-![Slickdeals-before](https://user-images.githubusercontent.com/31900031/122291330-b58fa780-cec2-11eb-862e-999810a341e7.jpeg)
-
+  ![Slickdeals-before](https://user-images.githubusercontent.com/31900031/122291330-b58fa780-cec2-11eb-862e-999810a341e7.jpeg)
 </div>
 <div>
-
-![Slickdeals-after](https://user-images.githubusercontent.com/31900031/122291334-b7596b00-cec2-11eb-9405-e9a3797d70be.jpeg)
-
+  ![Slickdeals-after](https://user-images.githubusercontent.com/31900031/122291334-b7596b00-cec2-11eb-9405-e9a3797d70be.jpeg)
 </div>
 
 # Version History
 
-0.5.0
-Added search feature
-Added AUTO option
-Added support for Youtube (Full screen Only)
-Added support for Netflix (Full screen Only)
+<ul>
+  <li>
+    0.5.0
+    Added search feature
+    Added AUTO option
+    Added support for Youtube (Full screen Only)
+    Added support for Netflix (Full screen Only)
+  </li>
 
-0.4.0
-Added support for Cars.com and Hotels.com
-Major CSS updates for amazon
-Added dark mode
+  <li>
+    0.4.0
+    Added support for Cars.com and Hotels.com
+    Major CSS updates for amazon
+    Added dark mode
+  </li>
 
-0.3.0
-Updated amazon.css and walmart.css to fix display issues
+  <li>
+    0.3.0
+    Updated amazon.css and walmart.css to fix display issues
+  </li>
 
-0.2.0
-Updated popup.js to fix issue with saving settings locally
+  <li>
+    0.2.0
+    Updated popup.js to fix issue with saving settings locally
+  </li>
 
-0.1.0
-Initial Release
+  <li>
+    0.1.0
+    Initial Release
+  </li>
+</ul>
