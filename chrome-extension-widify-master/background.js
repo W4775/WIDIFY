@@ -51,7 +51,6 @@ function settingsCheck(baseDomain, tabId) {
 
 function widify(baseDomain, tabId) {
   const url = chrome.runtime.getURL("data/options.json");
-  let css = "";
   fetch(url)
     .then((res) => res.json())
     .then((data) => {

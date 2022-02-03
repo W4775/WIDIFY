@@ -3,8 +3,15 @@ const optionCardContainer = document.querySelector(
   "[data-option-cards-container]"
 );
 const searchInput = document.querySelector("[data-search]");
+const btnSuggestionSubmit = document.querySelector("[data-suggestion-submit]");
+const suggestionInput = document.querySelector("[data-suggestion-value]");
+
 const url = chrome.runtime.getURL("data/options.json");
 const storage = chrome.storage.local;
+
+const githubURL =
+  "https://github.com/W4775/Widify/discussions/new?category=ideas";
+
 let options = [];
 
 searchInput.addEventListener("input", (e) => {
@@ -15,6 +22,10 @@ searchInput.addEventListener("input", (e) => {
       option.name.toLowerCase().includes(value);
     option.element.classList.toggle("hide", !isVisible);
   });
+});
+
+btnSuggestionSubmit.addEventListener("click", (e) => {
+  submitSuggestion(suggestionInput.value);
 });
 
 fetch(url)
@@ -38,9 +49,10 @@ function setOptions(sites) {
     const card = optionCardTemplate.content.cloneNode(true).children[0];
     const header = card.querySelector("[data-header]");
     const body = card.querySelector("[data-body]");
-    const checkbox = card.querySelector("[data-check");
+    const cssSource = card.querySelector("[data-css-source-value]");
+    const checkbox = card.querySelector("[data-check]");
     header.textContent = site.name.toUpperCase();
-    body.textContent = site.cssURL;
+    cssSource.value = site.cssURL;
     checkbox.id = site.baseURL;
     checkbox.addEventListener("click", (e) => {
       saveSetting(checkbox);
@@ -56,12 +68,16 @@ function setOptions(sites) {
 }
 
 function saveSetting(checkbox) {
-  /*   storage.get(checkbox.id, function (result) {
-    var obj = {};
-    obj[checkbox.id] = checkbox.checked;
-    storage.set(obj);
-  }); */
   var obj = {};
   obj[checkbox.id] = checkbox.checked;
   storage.set(obj);
+}
+
+function submitSuggestion(siteBaseUrl) {
+  const title_value = "Request add new site specific CSS for " + siteBaseUrl;
+  const title_param = "&title=" + title_value;
+  const body_param = "&body=" + title_value;
+
+  window.open(githubURL + title_param + body_param, "AddASuggestion", "popup");
+  suggestionInput.value = "";
 }
