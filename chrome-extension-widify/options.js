@@ -1,3 +1,6 @@
+import { getBaseDomain, saveSetting, writeLog } from "./utils.js";
+
+const storage = chrome.storage.local;
 const optionCardTemplate = document.querySelector("[data-option-template]");
 const optionCardContainer = document.querySelector(
   "[data-option-cards-container]"
@@ -7,7 +10,6 @@ const btnSuggestionSubmit = document.querySelector("[data-suggestion-submit]");
 const suggestionInput = document.querySelector("[data-suggestion-value]");
 
 const url = chrome.runtime.getURL("data/options.json");
-const storage = chrome.storage.local;
 
 const githubURL =
   "https://github.com/W4775/Widify/discussions/new?category=ideas";
@@ -55,7 +57,7 @@ function setOptions(sites) {
     cssSource.value = site.cssURL;
     checkbox.id = site.baseURL;
     checkbox.addEventListener("click", (e) => {
-      saveSetting(checkbox);
+      saveSetting(checkbox.id, checkbox.checked);
     });
     checkbox.checked = false;
     storage.get(checkbox.id, function (result) {
@@ -64,12 +66,6 @@ function setOptions(sites) {
     optionCardContainer.append(card);
     return { name: site.name, email: site.name, element: card };
   });
-}
-
-function saveSetting(checkbox) {
-  var obj = {};
-  obj[checkbox.id] = checkbox.checked;
-  storage.set(obj);
 }
 
 function submitSuggestion(siteBaseUrl) {

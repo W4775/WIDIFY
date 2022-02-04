@@ -1,3 +1,5 @@
+import { getBaseDomain, saveSetting, writeLog } from "./utils.js";
+
 const storage = chrome.storage.local;
 const lists = {
   whitelist: "whitelist site",
@@ -123,21 +125,4 @@ function widify(baseDomain, tabId) {
         }
       });
     });
-}
-
-function getBaseDomain(tabURL) {
-  var tempUrl = new URL(tabURL);
-  var baseDomain = tempUrl.hostname.replace("www.", "");
-
-  return baseDomain;
-}
-
-function writeLog(msg) {
-  console.log("Widify: " + msg);
-}
-
-function saveSetting(url, value) {
-  var obj = {};
-  obj[url] = value;
-  storage.set(obj);
 }
