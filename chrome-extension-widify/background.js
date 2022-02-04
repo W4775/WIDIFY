@@ -2,11 +2,11 @@ import { getBaseDomain, saveSetting, writeLog } from "./utils.js";
 
 const storage = chrome.storage.local;
 const lists = {
-  whitelist: "whitelist site",
-  blacklist: "blacklist site",
+  whitelist: "Add to Whitelist",
+  blacklist: "Add to Blacklist",
 };
-const url = chrome.runtime.getURL("data/options.json");
-
+const url =
+  "https://raw.githubusercontent.com/W4775/WIDIFY-CONFIGS/main/data/options.json";
 let siteURLs = [];
 
 fetch(url)
@@ -104,7 +104,6 @@ function settingsCheck(tab) {
 }
 
 function widify(baseDomain, tabId) {
-  const url = chrome.runtime.getURL("data/options.json");
   fetch(url)
     .then((res) => res.json())
     .then((data) => {

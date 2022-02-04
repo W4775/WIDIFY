@@ -2666,6 +2666,16 @@ input {
   padding: 5px;
 }
 
+.auto-warning {
+  font-size: var(--widify--title--medium);
+  color: var(--material-theme--sys--light--error);
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .widify-title {
   font-size: 1.75rem;
   letter-spacing: 1rem;

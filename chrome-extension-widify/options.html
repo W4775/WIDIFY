@@ -82,7 +82,7 @@
         <div class="whitelist-blacklist-card">
           <div class="card">
             <div class="header-container">
-              <div class="header">AUTO (EXPERIMENTAL!)</div>
+              <div class="header">AUTO (EXPERIMENTAL)</div>
               <label class="switch">
                 <input type="checkbox" id="auto" data-check />
                 <span class="slider"></span>
@@ -90,6 +90,12 @@
             </div>
             <div class="body">
               <span>
+                <p class="auto-warning">
+                  !! This option will remove the limitation on ALL elements on a
+                  page, it will NOT differentiate between an element that should
+                  be WIDIFY'D and one that should not. Use this option with
+                  caution as it will cause issues with displayed content. !!
+                </p>
                 <ul id="whitelist"></ul>
                 <label for="canidate"> Add to Whitelist: </label>
                 <input id="canidate" type="text" />

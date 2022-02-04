@@ -9,8 +9,8 @@ const searchInput = document.querySelector("[data-search]");
 const btnSuggestionSubmit = document.querySelector("[data-suggestion-submit]");
 const suggestionInput = document.querySelector("[data-suggestion-value]");
 
-const url = chrome.runtime.getURL("data/options.json");
-
+const url =
+  "https://raw.githubusercontent.com/W4775/WIDIFY-CONFIGS/main/data/options.json";
 const githubURL =
   "https://github.com/W4775/Widify/discussions/new?category=ideas";
 
