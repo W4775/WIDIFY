@@ -3,12 +3,32 @@ const lists = {
   whitelist: "whitelist site",
   blacklist: "blacklist site",
 };
+const url = chrome.runtime.getURL("data/options.json");
+
+let siteURLs = [];
+
+fetch(url)
+  .then((res) => res.json())
+  .then((data) => {
+    const sites = data.sites;
+    sites.forEach((site) => {
+      siteURLs.push(site.baseURL);
+    });
+  })
+  .catch(console.error);
+
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+  chrome.tabs.get(activeInfo.tabId, function (tab) {
+    if (tab && tab.url) {
+      const baseDomain = getBaseDomain(tab.url);
+      checkForSiteSupport(baseDomain, tab.id, false, false);
+    }
+  });
+});
 
 chrome.action.onClicked.addListener(function (tab) {
-  chrome.action.setTitle({ tabId: tab.id, title: "You are on tab:" + tab.id });
-  /*   chrome.action.setBadgeText({ text: "ON" });
-  chrome.action.setBadgeBackgroundColor({ color: "#4688F1" });
-  chrome.action.disable(); */
+  const baseDomain = getBaseDomain(tab.url);
+  checkForSiteSupport(baseDomain, tab.id, true, true);
 });
 
 chrome.runtime.onInstalled.addListener(function () {
@@ -32,19 +52,51 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
       function (tabs) {
         var tab = tabs[0];
         if (tab && tab.url) {
-          var tempUrl = new URL(tab.url);
-          var baseDomain = tempUrl.hostname.replace("www.", "");
-          settingsCheck(baseDomain, e.tabId);
+          settingsCheck(tab);
         }
       }
     );
   }
 });
 
-function settingsCheck(baseDomain, tabId) {
+function checkForSiteSupport(baseDomain, tabID, isSave, isInverse) {
   storage.get(baseDomain, function (result) {
-    if (result[baseDomain]) {
-      widify(baseDomain, tabId);
+    if (result) {
+      let resVal = isInverse ? !result[baseDomain] : result[baseDomain];
+      if (isSave) {
+        saveSetting(baseDomain, resVal);
+        chrome.tabs.reload(tabID);
+      }
+
+      if (siteURLs.includes(baseDomain)) {
+        setIcon(resVal);
+      } else {
+        setIcon(false);
+      }
+    }
+  });
+}
+
+function setIcon(isEnabled) {
+  if (isEnabled) {
+    chrome.action.setIcon({ path: "./images/icon19.png" });
+  } else {
+    chrome.action.setIcon({ path: "./images/icon19-disabled.png" });
+  }
+}
+
+function settingsCheck(tab) {
+  const baseDomain = getBaseDomain(tab.url);
+  storage.get(baseDomain, function (result) {
+    if (result) {
+      if (result[baseDomain]) {
+        widify(baseDomain, tab.id);
+      }
+      if (siteURLs.includes(baseDomain)) {
+        setIcon(result[baseDomain]);
+      } else {
+        setIcon(false);
+      }
     }
   });
 }
@@ -73,6 +125,19 @@ function widify(baseDomain, tabId) {
     });
 }
 
+function getBaseDomain(tabURL) {
+  var tempUrl = new URL(tabURL);
+  var baseDomain = tempUrl.hostname.replace("www.", "");
+
+  return baseDomain;
+}
+
 function writeLog(msg) {
   console.log("Widify: " + msg);
+}
+
+function saveSetting(url, value) {
+  var obj = {};
+  obj[url] = value;
+  storage.set(obj);
 }

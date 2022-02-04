@@ -59,7 +59,6 @@ function setOptions(sites) {
     });
     checkbox.checked = false;
     storage.get(checkbox.id, function (result) {
-      console.log(result[site.baseURL]);
       checkbox.checked = result[site.baseURL];
     });
     optionCardContainer.append(card);
