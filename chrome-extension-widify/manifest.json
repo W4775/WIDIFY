@@ -28,7 +28,8 @@
     "webNavigation",
     "contextMenus",
     "storage",
-    "activeTab"
+    "activeTab",
+    "declarativeContent"
   ],
   "host_permissions": ["*://*/*"],
   "web_accessible_resources": [

@@ -3,7 +3,6 @@ import { getBaseDomain, saveSetting, writeLog } from "./utils.js";
 const storage = chrome.storage.local;
 const lists = {
   whitelist: "Add to Whitelist",
-  blacklist: "Add to Blacklist",
 };
 const url =
   "https://raw.githubusercontent.com/W4775/WIDIFY-CONFIGS/main/data/options.json";
@@ -79,6 +78,16 @@ function checkForSiteSupport(baseDomain, tabID, isSave, isInverse) {
   });
 }
 
+function applyAuto() {
+  document.querySelectorAll("*").forEach(function (node) {
+    var styles = window.getComputedStyle(node, null);
+
+    if (styles.getPropertyValue("max-width") != "none") {
+      node.style.setProperty("max-width", "none", "important");
+    }
+  });
+}
+
 function setIcon(isEnabled) {
   if (isEnabled) {
     chrome.action.setIcon({ path: "./images/icon19.png" });
@@ -89,6 +98,21 @@ function setIcon(isEnabled) {
 
 function settingsCheck(tab) {
   const baseDomain = getBaseDomain(tab.url);
+
+  storage.get("auto", function (result) {
+    if (result["auto"]) {
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tab.id },
+          func: applyAuto,
+        },
+        () => {
+          writeLog("Applied AUTO to tab " + tab.id);
+        }
+      );
+    }
+  });
+
   storage.get(baseDomain, function (result) {
     if (result) {
       if (result[baseDomain]) {
@@ -125,3 +149,26 @@ function widify(baseDomain, tabId) {
       });
     });
 }
+
+/* Future feature
+
+function addCropIcon() {
+  let controls = Document.getElementsByClassName("ytp-buttons");
+  let cropIcon = Document.createElement("button");
+  cropIcon.innerHTML = "crop";
+  cropIcon.onclick = function () {
+    // set video to crop
+  };
+  cropIcon.insertBefore(cropIcon, controls[0]);
+}
+
+function addStretchIcon() {
+  let controls = document.getElementsByClassName("ytp-buttons");
+  let stretchIcon = document.createElement("button");
+  stretchIcon.innerHTML = "crop";
+  stretchIcon.onclick = function () {
+    // set video to stretch
+  };
+  stretchIcon.insertBefore(stretchIcon, controls[0]);
+}
+*/

@@ -6,12 +6,16 @@ const optionCardContainer = document.querySelector(
   "[data-option-cards-container]"
 );
 const searchInput = document.querySelector("[data-search]");
+const autoOption = document.querySelector("[data-auto]");
+
 const btnSuggestionSubmit = document.querySelector("[data-suggestion-submit]");
 const suggestionInput = document.querySelector("[data-suggestion-value]");
 
-const url =
+const optionsUrl =
   "https://raw.githubusercontent.com/W4775/WIDIFY-CONFIGS/main/data/options.json";
-const githubURL =
+
+const issueURL = "https://github.com/W4775/WIDIFY-CONFIGS/issues/new?";
+const suggestionURL =
   "https://github.com/W4775/Widify/discussions/new?category=ideas";
 
 let options = [];
@@ -30,7 +34,11 @@ btnSuggestionSubmit.addEventListener("click", (e) => {
   submitSuggestion(suggestionInput.value);
 });
 
-fetch(url)
+autoOption.addEventListener("click", (e) => {
+  saveSetting("auto", autoOption.checked);
+});
+
+fetch(optionsUrl)
   .then((res) => res.json())
   .then((data) => {
     const sites = data.sites;
@@ -53,6 +61,7 @@ function setOptions(sites) {
     const body = card.querySelector("[data-body]");
     const cssSource = card.querySelector("[data-css-source-value]");
     const checkbox = card.querySelector("[data-check]");
+    const btnIssueSubmit = card.querySelector("[data-issue-submit]");
     header.textContent = site.name.toUpperCase();
     cssSource.value = site.cssURL;
     checkbox.id = site.baseURL;
@@ -63,16 +72,40 @@ function setOptions(sites) {
     storage.get(checkbox.id, function (result) {
       checkbox.checked = result[site.baseURL];
     });
+    btnIssueSubmit.addEventListener("click", (e) => {
+      submitIssue(site.baseURL);
+    });
     optionCardContainer.append(card);
     return { name: site.name, email: site.name, element: card };
+  });
+
+  storage.get("auto", function (result) {
+    autoOption.checked = result["auto"];
   });
 }
 
 function submitSuggestion(siteBaseUrl) {
-  const title_value = "Request add new site specific CSS for " + siteBaseUrl;
-  const title_param = "&title=" + title_value;
-  const body_param = "&body=" + title_value;
+  if (siteBaseUrl) {
+    const title_value = "Request add new site specific CSS for " + siteBaseUrl;
+    const title_param = "&title=" + title_value;
+    const body_param = "&body=" + title_value;
 
-  window.open(githubURL + title_param + body_param, "AddASuggestion", "popup");
-  suggestionInput.value = "";
+    window.open(
+      suggestionURL + title_param + body_param,
+      "AddASuggestion",
+      "popup"
+    );
+    suggestionInput.value = "";
+  }
+}
+
+function submitIssue(siteBaseUrl) {
+  if (siteBaseUrl) {
+    const title_value = "Issue with " + siteBaseUrl + " css";
+
+    const title_param = "title=" + title_value;
+    const body_param = "&body=" + "<!-- describe the issue below -->";
+
+    window.open(issueURL + title_param + body_param, "AddAIssue", "popup");
+  }
 }
