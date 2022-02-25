@@ -34,13 +34,14 @@ async function getOptions() {
       setOptions(sites);
 
       sites.forEach((site) => {
-        storage.get(site.baseURL, function (result) {
-          if (document.getElementById(site.baseURL)) {
-            document.getElementById(site.baseURL).checked = result.get(
-              "enabled"
-            )
-              ? result.get("enabled")
-              : false;
+        getSetting(site.baseURL).then((result) => {
+          if (result) {
+            console.log(result);
+            let enabledSetting = result.find((x) => x.enabled);
+            console.log(enabledSetting);
+            if (enabledSetting)
+              document.getElementById(site.baseURL).checked =
+                enabledSetting["enabled"];
           }
         });
       });
@@ -104,13 +105,16 @@ function setOptions(sites) {
       submitIssue(site.baseURL);
     });
 
-    storage.get(checkbox.id, function (result) {
-      checkbox.checked = result.get("enabled") ? result.get("enabled") : false;
+    getSetting(checkbox.id).then((result) => {
+      if (result) {
+        let enabledSetting = result.find((x) => x["enabled"]);
+        if (enabledSetting) checkbox.checked = enabledSetting["enabled"];
 
-      padding.value = result.get("content-padding")
-        ? result.get("content-padding")
-        : 0;
+        let paddingSetting = result.find((x) => x["content-padding"]);
+        if (paddingSetting) padding.value = paddingSetting["content-padding"];
+      }
     });
+
     optionCardContainer.append(card);
     return { name: site.name, element: card };
   });

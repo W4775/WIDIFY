@@ -1,4 +1,4 @@
-import { getBaseDomain, saveSetting, writeToLog } from "./utils.js";
+import { getBaseDomain, getSetting, saveSetting, writeToLog } from "./utils.js";
 
 const storage = chrome.storage.local;
 const lists = {
@@ -21,26 +21,29 @@ fetch(url)
 chrome.tabs.onActivated.addListener(function (activeInfo) {
   chrome.tabs.get(activeInfo.tabId, function (tab) {
     if (tab && tab.url) {
-      const baseDomain = getBaseDomain(tab.url);
-      checkForSiteSupport(baseDomain, tab.id, false, false);
+      getBaseDomain(tab.url).then((result) => {
+        checkForSiteSupport(result, tab.id);
+      });
     }
   });
 });
 
 chrome.action.onClicked.addListener(function (tab) {
-  const baseDomain = getBaseDomain(tab.url);
-  checkForSiteSupport(baseDomain, tab.id, true, true);
+  getBaseDomain(tab.url).then((result) => {
+    checkForSiteSupport(result, tab.id);
+  });
 });
 
 chrome.runtime.onInstalled.addListener(function () {
-  for (const key of Object.keys(lists)) {
+  //chrome.storage.local.clear();
+  /*  for (const key of Object.keys(lists)) {
     chrome.contextMenus.create({
       id: key,
       title: lists[key],
       type: "normal",
       contexts: ["all"],
     });
-  }
+  } */
 });
 
 chrome.webNavigation.onCommitted.addListener(function (e) {
@@ -52,6 +55,7 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
       },
       function (tabs) {
         var tab = tabs[0];
+        console.log(tabs);
         if (tab && tab.url) {
           settingsCheck(tab);
         }
@@ -60,12 +64,39 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
   }
 });
 
-function checkForSiteSupport(baseDomain, tabID, isSave, isInverse) {
-  storage.get(baseDomain, function (result) {
+function checkForSiteSupport(baseDomain, tabID) {
+  console.log(siteURLs);
+  console.log(baseDomain);
+  if (siteURLs.includes(baseDomain)) {
+    console.log("site included");
+    console.log(baseDomain);
+    getSetting(baseDomain).then((result) => {
+      console.log(result);
+      if (result) {
+        let enabledSetting = result.find((x) => x.enabled);
+        if (enabledSetting) {
+          console.log("enabledSetting");
+          console.log(enabledSetting);
+          saveSetting(baseDomain, "enabled", !enabledSetting["enabled"]);
+          setIcon(!enabledSetting["enabled"]);
+        }
+      } else {
+        saveSetting(baseDomain, "enabled", true);
+        setIcon(true);
+      }
+
+      chrome.tabs.reload(tabID);
+    });
+  } else {
+    setIcon(false);
+  }
+
+  /*   storage.get(baseDomain, function (result) {
     if (result) {
+      console.log(result);
       let resVal = isInverse ? !result[baseDomain] : result[baseDomain];
       if (isSave) {
-        saveSetting(baseDomain, resVal);
+        saveSetting(baseDomain, "enabled", resVal);
         chrome.tabs.reload(tabID);
       }
 
@@ -75,7 +106,7 @@ function checkForSiteSupport(baseDomain, tabID, isSave, isInverse) {
         setIcon(false);
       }
     }
-  });
+  }); */
 }
 
 function applyAuto() {
@@ -97,8 +128,6 @@ function setIcon(isEnabled) {
 }
 
 function settingsCheck(tab) {
-  const baseDomain = getBaseDomain(tab.url);
-
   storage.get("auto", function (result) {
     if (result["auto"]) {
       chrome.scripting.executeScript(
@@ -112,17 +141,20 @@ function settingsCheck(tab) {
       );
     }
   });
-
-  storage.get(baseDomain, function (result) {
-    if (result) {
-      if (result[baseDomain]) {
-        widify(baseDomain, tab);
-      }
-      if (siteURLs.includes(baseDomain)) {
-        setIcon(result[baseDomain]);
-      } else {
-        setIcon(false);
-      }
+  getBaseDomain(tab.url).then((baseDomain) => {
+    if (baseDomain) {
+      getSetting(baseDomain).then((result) => {
+        if (result) {
+          if (result[baseDomain]) {
+            widify(baseDomain, tab);
+          }
+          if (siteURLs.includes(baseDomain)) {
+            setIcon(result[baseDomain]);
+          } else {
+            setIcon(false);
+          }
+        }
+      });
     }
   });
 }

@@ -6,7 +6,7 @@ const getBaseDomain = async function (tabURL) {
 };
 
 const writeToLog = async function (msg) {
-  console.log("Widify: " + msg);
+  console.log("WIDIFY: " + msg);
 };
 
 /**
@@ -32,28 +32,46 @@ const getSetting = async function (key) {
 const saveSetting = async function (url, key, value) {
   var siteSetting = {};
   var siteOption = {};
-  siteOption[key] = value;
-  siteSetting[url] = siteOption;
 
   return new Promise((resolve, reject) => {
     try {
       getSetting(url).then((result) => {
         if (result) {
-          if (key in result) {
-            var siteTest = {};
-            siteTest[url] = value;
-            siteSetting[url] = siteTest;
+          let obj = checkForExisting(result, key);
+          if (obj) {
+            let index = result.indexOf(obj);
+            result.fill((obj[key] = value), index, index++);
+          } else {
+            siteOption[key] = value;
+            result.push(siteOption);
           }
+          siteSetting[url] = result;
+        } else {
+          siteOption[key] = value;
+          siteSetting[url] = [siteOption];
         }
-      });
-      chrome.storage.local.set(siteSetting, function () {
-        resolve();
+        chrome.storage.local.set(siteSetting, function () {
+          resolve();
+        });
       });
     } catch (ex) {
       reject(ex);
     }
   });
 };
+
+function checkForExisting(result, key) {
+  let obj = [];
+
+  for (let index = 0; index < result.length; index++) {
+    obj = [result[index]].find((x) => {
+      return key in x;
+    });
+    if (obj) {
+      return obj;
+    }
+  }
+}
 
 /**
  * Removes Object from Chrome Local StorageArea.
