@@ -1,4 +1,4 @@
-import { getBaseDomain, saveSetting, writeLog } from "./utils.js";
+import { getBaseDomain, saveSetting, writeToLog, getSetting } from "./utils.js";
 
 const storage = chrome.storage.local;
 const optionCardTemplate = document.querySelector("[data-option-template]");
@@ -11,6 +11,11 @@ const autoOption = document.querySelector("[data-auto]");
 const btnSuggestionSubmit = document.querySelector("[data-suggestion-submit]");
 const suggestionInput = document.querySelector("[data-suggestion-value]");
 
+const darkToggle = document.querySelector("[data-option-dark]");
+const lightToggle = document.querySelector("[data-option-light]");
+
+var htmlElement = document.getElementsByTagName("html")[0];
+
 const optionsUrl =
   "https://raw.githubusercontent.com/W4775/WIDIFY-CONFIGS/main/data/options.json";
 
@@ -19,6 +24,29 @@ const suggestionURL =
   "https://github.com/W4775/Widify/discussions/new?category=ideas";
 
 let options = [];
+suggestionInput.value = "";
+
+async function getOptions() {
+  await fetch(optionsUrl)
+    .then((res) => res.json())
+    .then((data) => {
+      const sites = data.sites;
+      setOptions(sites);
+
+      sites.forEach((site) => {
+        storage.get(site.baseURL, function (result) {
+          if (document.getElementById(site.baseURL)) {
+            document.getElementById(site.baseURL).checked = result.get(
+              "enabled"
+            )
+              ? result.get("enabled")
+              : false;
+          }
+        });
+      });
+    })
+    .catch(console.error);
+}
 
 searchInput.addEventListener("input", (e) => {
   const value = e.target.value.toLowerCase();
@@ -38,21 +66,15 @@ autoOption.addEventListener("click", (e) => {
   saveSetting("auto", autoOption.checked);
 });
 
-fetch(optionsUrl)
-  .then((res) => res.json())
-  .then((data) => {
-    const sites = data.sites;
-    setOptions(sites);
+lightToggle.addEventListener("click", (e) => {
+  htmlElement.classList.remove("dark");
+  htmlElement.classList.add("light");
+});
 
-    sites.forEach((site) => {
-      storage.get(site.baseURL, function (result) {
-        if (document.getElementById(site.baseURL)) {
-          document.getElementById(site.baseURL).checked = result[site.baseURL];
-        }
-      });
-    });
-  })
-  .catch(console.error);
+darkToggle.addEventListener("click", (e) => {
+  htmlElement.classList.remove("light");
+  htmlElement.classList.add("dark");
+});
 
 function setOptions(sites) {
   options = sites.map((site) => {
@@ -62,21 +84,35 @@ function setOptions(sites) {
     const cssSource = card.querySelector("[data-css-source-value]");
     const checkbox = card.querySelector("[data-check]");
     const btnIssueSubmit = card.querySelector("[data-issue-submit]");
+    const padding = card.querySelector("[data-padding-value");
+
     header.textContent = site.name.toUpperCase();
     cssSource.value = site.cssURL;
     checkbox.id = site.baseURL;
-    checkbox.addEventListener("click", (e) => {
-      saveSetting(checkbox.id, checkbox.checked);
-    });
+    padding.value = 0;
     checkbox.checked = false;
-    storage.get(checkbox.id, function (result) {
-      checkbox.checked = result[site.baseURL];
+
+    checkbox.addEventListener("click", (e) => {
+      saveSetting(checkbox.id, "enabled", checkbox.checked);
     });
+
+    padding.addEventListener("input", (e) => {
+      saveSetting(checkbox.id, "content-padding", padding.value);
+    });
+
     btnIssueSubmit.addEventListener("click", (e) => {
       submitIssue(site.baseURL);
     });
+
+    storage.get(checkbox.id, function (result) {
+      checkbox.checked = result.get("enabled") ? result.get("enabled") : false;
+
+      padding.value = result.get("content-padding")
+        ? result.get("content-padding")
+        : 0;
+    });
     optionCardContainer.append(card);
-    return { name: site.name, email: site.name, element: card };
+    return { name: site.name, element: card };
   });
 
   storage.get("auto", function (result) {
@@ -85,7 +121,7 @@ function setOptions(sites) {
 }
 
 function submitSuggestion(siteBaseUrl) {
-  if (siteBaseUrl) {
+  if (siteBaseUrl.trim() !== "") {
     const title_value = "Request add new site specific CSS for " + siteBaseUrl;
     const title_param = "&title=" + title_value;
     const body_param = "&body=" + title_value;
@@ -95,12 +131,12 @@ function submitSuggestion(siteBaseUrl) {
       "AddASuggestion",
       "popup"
     );
-    suggestionInput.value = "";
   }
+  suggestionInput.value = "";
 }
 
 function submitIssue(siteBaseUrl) {
-  if (siteBaseUrl) {
+  if (siteBaseUrl.trim() !== "") {
     const title_value = "Issue with " + siteBaseUrl + " css";
 
     const title_param = "title=" + title_value;
@@ -109,3 +145,5 @@ function submitIssue(siteBaseUrl) {
     window.open(issueURL + title_param + body_param, "AddAIssue", "popup");
   }
 }
+
+getOptions();

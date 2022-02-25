@@ -18,6 +18,8 @@
           <span class="widify-title">WIDIFY</span>
         </div>
         <div>
+          <span data-option-dark>dark</span> /
+          <span data-option-light>light</span>
           <input
             type="search"
             class="searchInput"
@@ -32,17 +34,24 @@
             <div class="header-container">
               <div class="header" data-header>SUGGEST A SITE</div>
             </div>
-            <div class="body" data-body>
-              <span>
+            <div class="body" data-body style="display: flex">
+              <span class="content-padding-option" style="display: grid">
                 <label for="suggestion">
-                  Site base URL (ie: google.com) [! Must be logged into GitHub
-                  !]:</label
+                  Site base URL (ie: google.com) [! Must be logged into
+                  <a href="https://github.com/login" target="_blank">GitHub</a>
+                  !]:
+                </label>
+                <textarea
+                  id="suggestion"
+                  class="suggestion-value"
+                  rows="5"
+                  data-suggestion-value
                 >
-                <input id="suggestion" data-suggestion-value />
+                </textarea>
+                <button data-suggestion-submit class="btn-suggestion-submit">
+                  Submit
+                </button>
               </span>
-              <button data-suggestion-submit class="btn-suggestion-submit">
-                Submit
-              </button>
             </div>
           </div>
         </div>
@@ -52,19 +61,21 @@
             <div class="header-container">
               <div class="header" data-header></div>
               <label class="switch">
-                <input type="checkbox" data-check />
+                <input type="checkbox" data-check />on
                 <span class="slider"></span>
               </label>
             </div>
             <div class="body" data-body>
               <span class="content-padding-option">
-                <label for="padding">Content Padding Override (in px):</label>
+                <label for="padding">Content Padding Override:</label>
                 <input
                   id="padding"
                   type="number"
                   class="content-padding-value"
+                  value="0"
                   data-padding-value
                 />
+                px
               </span>
               <span class="css-source-option">
                 <label for="cssSource">Reading CSS from: </label>

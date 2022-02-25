@@ -1,4 +1,4 @@
-import { getBaseDomain, saveSetting, writeLog } from "./utils.js";
+import { getBaseDomain, saveSetting, writeToLog } from "./utils.js";
 
 const storage = chrome.storage.local;
 const lists = {
@@ -107,7 +107,7 @@ function settingsCheck(tab) {
           func: applyAuto,
         },
         () => {
-          writeLog("Applied AUTO to tab " + tab.id);
+          writeToLog("Applied AUTO to tab " + tab.id);
         }
       );
     }
@@ -116,7 +116,7 @@ function settingsCheck(tab) {
   storage.get(baseDomain, function (result) {
     if (result) {
       if (result[baseDomain]) {
-        widify(baseDomain, tab.id);
+        widify(baseDomain, tab);
       }
       if (siteURLs.includes(baseDomain)) {
         setIcon(result[baseDomain]);
@@ -127,7 +127,7 @@ function settingsCheck(tab) {
   });
 }
 
-function widify(baseDomain, tabId) {
+function widify(baseDomain, tab) {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
@@ -139,15 +139,43 @@ function widify(baseDomain, tabId) {
               chrome.scripting.insertCSS({
                 css: css,
                 target: {
-                  tabId: tabId,
+                  tabId: tab.id,
                 },
               });
-              writeLog("Applied " + siteName + ".css to tab " + tabId);
+              writeToLog("Applied " + siteName + ".css to tab " + tab.id);
             }
           );
+
+          applyContentPadding(tab);
         }
       });
     });
+}
+
+function applyContentPadding(tab) {
+  const baseDomain = getBaseDomain(tab.url);
+  const contentPadding = baseDomain + "-content-padding";
+
+  storage.get(contentPadding, function (result) {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tab.id },
+        func: setContentPadding,
+        args: [result[contentPadding]],
+      },
+      () => {
+        writeToLog("Applied Content Padding to tab " + tab.id);
+      }
+    );
+  });
+}
+
+function setContentPadding(contentPadding) {
+  let root = document.documentElement;
+  root.style.setProperty(
+    "--max-width",
+    "calc(100% - " + contentPadding + "px)"
+  );
 }
 
 /* Future feature
