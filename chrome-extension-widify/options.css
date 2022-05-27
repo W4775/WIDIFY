@@ -2657,7 +2657,6 @@ html {
 body {
   font-size: var(--widify--body--small);
   font-family: "Arial", serif;
-  font-weight: bolder;
   height: 100%;
   width: 100%;
 }
@@ -2779,12 +2778,16 @@ input[type=number] {text-align: right;}
 
 .auto-warning {
   font-size: var(--widify--title--medium);
-  color: var(--material-theme--sys--light--error);
+  color: white;
   margin-bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--color6);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
 }
 
 .widify-title {
@@ -2859,6 +2862,7 @@ input[type=number] {text-align: right;}
 
 .card > .header-container > .header {
   font-size: var(--widify--title--medium);
+  font-weight: bold;
 }
 
 .card > .body {
@@ -2966,8 +2970,8 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-.whitelist-blacklist-card {
-  display: grid;
+.blacklist-card {
+  display: none;
   grid-template-columns: 1fr;
   margin: 1rem 0px;
 }
@@ -2991,6 +2995,8 @@ input:checked + .slider:before {
 
 .light .dark-toggle {
   display: block;
+  cursor: pointer;
+  user-select: none;
 }
 
 .dark .dark-toggle {
@@ -2998,5 +3004,7 @@ input:checked + .slider:before {
 }
 
 .dark .light-toggle {
-  display:block
+  display: block;
+  cursor: pointer;
+  user-select: none;
 }

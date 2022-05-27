@@ -10,6 +10,7 @@ const autoOption = document.querySelector("[data-auto]");
 
 const btnSuggestionSubmit = document.querySelector("[data-suggestion-submit]");
 const suggestionInput = document.querySelector("[data-suggestion-value]");
+const btnAddToBlacklist = document.querySelector("[data-add-to-blacklist]");
 
 const darkToggle = document.querySelector("[data-option-dark]");
 const lightToggle = document.querySelector("[data-option-light]");
@@ -35,14 +36,12 @@ async function getOptions() {
       setTheme();
       sites.forEach((site) => {
         getSetting(site.baseURL).then((result) => {
-          if (result) {
-            console.log(result);
-            let enabledSetting = result.find((x) => x.enabled);
-            console.log(enabledSetting);
-            if (enabledSetting)
-              document.getElementById(site.baseURL).checked =
-                enabledSetting["enabled"];
-          }
+          if (!result) return;
+
+          let enabledSetting = result.find((x) => x.enabled);
+          if (enabledSetting)
+            document.getElementById(site.baseURL).checked =
+              enabledSetting["enabled"];
         });
       });
     })
@@ -52,15 +51,17 @@ async function getOptions() {
 searchInput.addEventListener("input", (e) => {
   const value = e.target.value.toLowerCase();
   options.forEach((option) => {
-    const isVisible =
-      option.name.toLowerCase().includes(value) ||
-      option.name.toLowerCase().includes(value);
+    const isVisible = option.name.toLowerCase().includes(value);
     option.element.classList.toggle("hide", !isVisible);
   });
 });
 
 btnSuggestionSubmit.addEventListener("click", (e) => {
   submitSuggestion(suggestionInput.value);
+});
+
+btnAddToBlacklist.addEventListener("click", (e) => {
+  addItem();
 });
 
 autoOption.addEventListener("click", (e) => {
@@ -108,13 +109,13 @@ function setOptions(sites) {
     });
 
     getSetting(checkbox.id).then((result) => {
-      if (result) {
-        let enabledSetting = result.find((x) => x["enabled"]);
-        if (enabledSetting) checkbox.checked = enabledSetting["enabled"];
+      if (!result) return;
 
-        let paddingSetting = result.find((x) => x["content-padding"]);
-        if (paddingSetting) padding.value = paddingSetting["content-padding"];
-      }
+      let enabledSetting = result.find((x) => x["enabled"]);
+      if (enabledSetting) checkbox.checked = enabledSetting["enabled"];
+
+      let paddingSetting = result.find((x) => x["content-padding"]);
+      if (paddingSetting) padding.value = paddingSetting["content-padding"];
     });
 
     optionCardContainer.append(card);
@@ -165,6 +166,25 @@ function setTheme() {
       htmlElement.classList.add("light");
     }
   });
+}
+
+function addItem() {
+  let input = document.getElementById("txtBlacklist");
+  let text = input.value;
+  let newLi = document.createElement("li");
+  newLi.textContent = text + " ";
+  let deleteLink = document.createElement("a");
+  deleteLink.textContent = "[Delete]";
+  deleteLink.href = "#";
+  deleteLink.addEventListener("click", deleteItem);
+  newLi.appendChild(deleteLink);
+
+  document.getElementById("blacklist").appendChild(newLi);
+  input.value = "";
+
+  function deleteItem() {
+    document.getElementById("blacklist").removeChild(newLi);
+  }
 }
 
 getOptions();

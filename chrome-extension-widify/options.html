@@ -104,7 +104,7 @@
             </div>
           </div>
         </template>
-        <div class="whitelist-blacklist-card">
+        <div class="blacklist-card">
           <div class="card">
             <div class="header-container">
               <div class="header">AUTO (UNSTABLE / EXPERIMENTAL)</div>
@@ -121,14 +121,11 @@
                   be WIDIFY'D and one that should not. Use this option with
                   caution as it will cause issues with displayed content. !!
                 </p>
-                <ul id="whitelist"></ul>
-                <label for="canidate"> Add to Whitelist: </label>
-                <input id="canidate" type="text" />
-                <button onclick="addItem()" class="buttonClass">
+
+                <label for="txtBlacklist"> Add to Blacklist: </label>
+                <input id="txtBlacklist" type="text" />
+                <button data-add-to-blacklist class="buttonClass">
                   Add item
-                </button>
-                <button onclick="removeItem()" class="buttonClass">
-                  Remove item
                 </button>
                 <ul id="blacklist"></ul>
               </span>

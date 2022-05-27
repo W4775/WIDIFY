@@ -23,19 +23,30 @@ chrome.tabs.onActivated.addListener(function (activeInfo) {
     if (tab && tab.url) {
       getBaseDomain(tab.url).then((result) => {
         checkForSiteSupport(result, tab.id);
+        settingsCheck(tab);
       });
     }
   });
 });
 
 chrome.action.onClicked.addListener(function (tab) {
-  getBaseDomain(tab.url).then((result) => {
-    checkForSiteSupport(result, tab.id);
-  });
+  /*   getBaseDomain(tab.url).then((baseDomain) => {
+    if (!baseDomain) return;
+    getSetting(baseDomain).then((result) => {
+      if (!result) return;
+      let enabledSetting = result.some((x) => x["enabled"]);
+      if (enabledSetting) {
+        widify(baseDomain, tab, true);
+        setIcon(false);
+      } else {
+        checkForSiteSupport(baseDomain, tab.id);
+      }
+    });
+  }); */
 });
 
 chrome.runtime.onInstalled.addListener(function () {
-  //chrome.storage.local.clear();
+  chrome.storage.local.clear();
   /*  for (const key of Object.keys(lists)) {
     chrome.contextMenus.create({
       id: key,
@@ -54,7 +65,6 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
       },
       function (tabs) {
         var tab = tabs[0];
-        console.log(tabs);
         if (tab && tab.url) {
           settingsCheck(tab);
         }
@@ -66,20 +76,13 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
 function checkForSiteSupport(baseDomain, tabID) {
   const enabledKey = "enabled";
   let shouldReload = false;
-  console.log(siteURLs);
-  console.log(baseDomain);
+
   if (siteURLs.includes(baseDomain)) {
-    console.log("site included");
-    console.log(baseDomain);
     getSetting(baseDomain).then((results) => {
-      console.log(results);
       if (results) {
         let enabledSetting = results.some((x) => x["enabled"]);
         if (enabledSetting) {
-          console.log("enabledSetting");
-          console.log(enabledSetting);
-          saveSetting(baseDomain, enabledKey, !enabledSetting[enabledKey]);
-          setIcon(!enabledSetting[enabledKey]);
+          setIcon(enabledSetting);
           shouldReload = true;
         }
       } else {
@@ -93,23 +96,6 @@ function checkForSiteSupport(baseDomain, tabID) {
   } else {
     setIcon(false);
   }
-
-  /*   storage.get(baseDomain, function (result) {
-    if (result) {
-      console.log(result);
-      let resVal = isInverse ? !result[baseDomain] : result[baseDomain];
-      if (isSave) {
-        saveSetting(baseDomain, "enabled", resVal);
-        chrome.tabs.reload(tabID);
-      }
-
-      if (siteURLs.includes(baseDomain)) {
-        setIcon(resVal);
-      } else {
-        setIcon(false);
-      }
-    }
-  }); */
 }
 
 function applyAuto() {
@@ -151,12 +137,15 @@ function settingsCheck(tab) {
           let enabledSetting = result.some((x) => x["enabled"]);
           if (enabledSetting) {
             widify(baseDomain, tab);
+          } else {
+            widify(baseDomain, tab, true);
+            setIcon(false);
           }
 
           if (siteURLs.includes(baseDomain)) {
             setIcon(enabledSetting);
           } else {
-            unwidify(tab);
+            widify(baseDomain, tab, true);
             setIcon(false);
           }
         }
@@ -165,7 +154,7 @@ function settingsCheck(tab) {
   });
 }
 
-function widify(baseDomain, tab) {
+function widify(baseDomain, tab, isRemove = false) {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
@@ -174,13 +163,24 @@ function widify(baseDomain, tab) {
           Promise.all([fetch(site.cssURL).then((res) => res.text())]).then(
             ([css]) => {
               const siteName = baseDomain.substring(0, baseDomain.length - 4);
-              chrome.scripting.insertCSS({
-                css: css,
-                target: {
-                  tabId: tab.id,
-                },
-              });
-              writeToLog("Applied " + siteName + ".css to tab " + tab.id);
+              if (isRemove) {
+                chrome.scripting.removeCSS({
+                  css: css,
+                  target: {
+                    tabId: tab.id,
+                  },
+                });
+                saveSetting(baseDomain, "enabled", false);
+                writeToLog("Removed " + siteName + ".css from tab " + tab.id);
+              } else {
+                chrome.scripting.insertCSS({
+                  css: css,
+                  target: {
+                    tabId: tab.id,
+                  },
+                });
+                writeToLog("Applied " + siteName + ".css to tab " + tab.id);
+              }
             }
           );
 
@@ -198,17 +198,21 @@ function unwidify(tab) {
 
 function applyContentPadding(baseDomain, tab) {
   getSetting(baseDomain).then((result) => {
-    let contentPadding = result.find((x) => x["content-padding"]);
-    chrome.scripting.executeScript(
-      {
-        target: { tabId: tab.id },
-        func: setContentPadding,
-        args: [contentPadding["content-padding"]],
-      },
-      () => {
-        writeToLog("Applied Content Padding to tab " + tab.id);
+    if (result) {
+      let contentPadding = result.find((x) => x["content-padding"]);
+      if (contentPadding) {
+        chrome.scripting.executeScript(
+          {
+            target: { tabId: tab.id },
+            func: setContentPadding,
+            args: [contentPadding["content-padding"]],
+          },
+          () => {
+            writeToLog("Applied Content Padding to tab " + tab.id);
+          }
+        );
       }
-    );
+    }
   });
 }
 
