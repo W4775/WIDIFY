@@ -32,7 +32,7 @@ async function getOptions() {
     .then((data) => {
       const sites = data.sites;
       setOptions(sites);
-
+      setTheme();
       sites.forEach((site) => {
         getSetting(site.baseURL).then((result) => {
           if (result) {
@@ -70,11 +70,13 @@ autoOption.addEventListener("click", (e) => {
 lightToggle.addEventListener("click", (e) => {
   htmlElement.classList.remove("dark");
   htmlElement.classList.add("light");
+  chrome.storage.local.set({ theme: "light" }, () => {});
 });
 
 darkToggle.addEventListener("click", (e) => {
   htmlElement.classList.remove("light");
   htmlElement.classList.add("dark");
+  chrome.storage.local.set({ theme: "dark" }, () => {});
 });
 
 function setOptions(sites) {
@@ -148,6 +150,21 @@ function submitIssue(siteBaseUrl) {
 
     window.open(issueURL + title_param + body_param, "AddAIssue", "popup");
   }
+}
+
+function setTheme() {
+  getSetting("theme").then((result) => {
+    if (result) {
+      htmlElement.classList.remove("light");
+      htmlElement.classList.remove("dark");
+      htmlElement.classList.add(result);
+    } else {
+      chrome.storage.local.set({ theme: "light" }, () => {});
+      htmlElement.classList.remove("light");
+      htmlElement.classList.remove("dark");
+      htmlElement.classList.add("light");
+    }
+  });
 }
 
 getOptions();

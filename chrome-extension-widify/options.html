@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <title>WIDIFY</title>
     <link rel="stylesheet" href="options.css" />
     <script type="module" src="./utils.js"></script>
     <script type="module" src="./options.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
   </head>
 
   <body>
@@ -17,15 +22,21 @@
           <img src="./images/icon38.png" alt="widify-logo" />
           <span class="widify-title">WIDIFY</span>
         </div>
-        <div>
-          <span data-option-dark>dark</span> /
-          <span data-option-light>light</span>
-          <input
-            type="search"
-            class="searchInput"
-            placeholder="Search for site"
-            data-search
-          />
+        <div class="nav-right-side">
+          <div class="dark-light-toggle">
+            <i class="material-icons light-toggle" data-option-light
+              >light_mode</i
+            >
+            <i class="material-icons dark-toggle" data-option-dark>dark_mode</i>
+          </div>
+          <div>
+            <input
+              type="search"
+              class="searchInput"
+              placeholder="Search for site"
+              data-search
+            />
+          </div>
         </div>
       </div>
       <div class="content">
