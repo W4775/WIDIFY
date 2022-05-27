@@ -51,7 +51,6 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
     chrome.tabs.query(
       {
         active: true,
-        currentWindow: true,
       },
       function (tabs) {
         var tab = tabs[0];
@@ -65,27 +64,31 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
 });
 
 function checkForSiteSupport(baseDomain, tabID) {
+  const enabledKey = "enabled";
+  let shouldReload = false;
   console.log(siteURLs);
   console.log(baseDomain);
   if (siteURLs.includes(baseDomain)) {
     console.log("site included");
     console.log(baseDomain);
-    getSetting(baseDomain).then((result) => {
-      console.log(result);
-      if (result) {
-        let enabledSetting = result.find((x) => x.enabled);
+    getSetting(baseDomain).then((results) => {
+      console.log(results);
+      if (results) {
+        let enabledSetting = results.some((x) => x["enabled"]);
         if (enabledSetting) {
           console.log("enabledSetting");
           console.log(enabledSetting);
-          saveSetting(baseDomain, "enabled", !enabledSetting["enabled"]);
-          setIcon(!enabledSetting["enabled"]);
+          saveSetting(baseDomain, enabledKey, !enabledSetting[enabledKey]);
+          setIcon(!enabledSetting[enabledKey]);
+          shouldReload = true;
         }
       } else {
-        saveSetting(baseDomain, "enabled", true);
+        saveSetting(baseDomain, enabledKey, true);
         setIcon(true);
+        shouldReload = true;
       }
 
-      chrome.tabs.reload(tabID);
+      if (shouldReload) chrome.tabs.reload(tabID);
     });
   } else {
     setIcon(false);
@@ -145,12 +148,15 @@ function settingsCheck(tab) {
     if (baseDomain) {
       getSetting(baseDomain).then((result) => {
         if (result) {
-          if (result[baseDomain]) {
+          let enabledSetting = result.some((x) => x["enabled"]);
+          if (enabledSetting) {
             widify(baseDomain, tab);
           }
+
           if (siteURLs.includes(baseDomain)) {
-            setIcon(result[baseDomain]);
+            setIcon(enabledSetting);
           } else {
+            unwidify(tab);
             setIcon(false);
           }
         }
@@ -178,22 +184,26 @@ function widify(baseDomain, tab) {
             }
           );
 
-          applyContentPadding(tab);
+          applyContentPadding(baseDomain, tab);
         }
       });
     });
 }
 
-function applyContentPadding(tab) {
-  const baseDomain = getBaseDomain(tab.url);
-  const contentPadding = baseDomain + "-content-padding";
+function unwidify(tab) {
+  chrome.scripting.removeCSS({
+    tabId: tab.id,
+  });
+}
 
-  storage.get(contentPadding, function (result) {
+function applyContentPadding(baseDomain, tab) {
+  getSetting(baseDomain).then((result) => {
+    let contentPadding = result.find((x) => x["content-padding"]);
     chrome.scripting.executeScript(
       {
         target: { tabId: tab.id },
         func: setContentPadding,
-        args: [result[contentPadding]],
+        args: [contentPadding["content-padding"]],
       },
       () => {
         writeToLog("Applied Content Padding to tab " + tab.id);
