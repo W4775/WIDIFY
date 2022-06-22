@@ -30,6 +30,11 @@ chrome.tabs.onActivated.addListener(function (activeInfo) {
 });
 
 chrome.action.onClicked.addListener(function (tab) {
+  if (chrome.runtime.openOptionsPage) {
+    chrome.runtime.openOptionsPage();
+  } else {
+    window.open(chrome.runtime.getURL("options.html"));
+  }
   /*   getBaseDomain(tab.url).then((baseDomain) => {
     if (!baseDomain) return;
     getSetting(baseDomain).then((result) => {
