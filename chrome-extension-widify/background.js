@@ -88,15 +88,11 @@ function checkForSiteSupport(baseDomain, tabID) {
         let enabledSetting = results.some((x) => x["enabled"]);
         if (enabledSetting) {
           setIcon(enabledSetting);
-          shouldReload = true;
         }
       } else {
         saveSetting(baseDomain, enabledKey, true);
         setIcon(true);
-        shouldReload = true;
       }
-
-      if (shouldReload) chrome.tabs.reload(tabID);
     });
   } else {
     setIcon(false);
