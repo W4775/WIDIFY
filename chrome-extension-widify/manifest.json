@@ -22,7 +22,7 @@
     "128": "images/icon128.png"
   },
   "version": "1.0.0",
-  "description": "Takes back unused space on web pages to allow for widescreen viewing bliss. You paid for that screen real estate, might as well use it.",
+  "description": "Takes back unused space on web pages to allow for widescreen viewing bliss. You paid for that screen real estate, you should use it.",
   "permissions": [
     "scripting",
     "webNavigation",
