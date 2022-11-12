@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "WIDIFY",
+  "name": "W I D I F Y",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
@@ -22,7 +22,7 @@
     "128": "images/icon128.png"
   },
   "version": "1.0.0",
-  "description": "Use all the space!",
+  "description": "Takes back unused space on web pages to allow for widescreen viewing bliss. You paid for that screen real estate, might as well use it.",
   "permissions": [
     "scripting",
     "webNavigation",
