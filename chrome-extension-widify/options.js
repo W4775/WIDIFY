@@ -39,9 +39,10 @@ async function getOptions() {
           if (!result) return;
 
           let enabledSetting = result.find((x) => x.enabled);
-          if (enabledSetting)
-            document.getElementById(site.baseURL).checked =
-              enabledSetting["enabled"];
+          if (!enabledSetting) return;
+
+          document.getElementById(site.baseURL).checked =
+            enabledSetting["enabled"];
         });
       });
     })
@@ -90,7 +91,16 @@ function setOptions(sites) {
     const btnIssueSubmit = card.querySelector("[data-issue-submit]");
     const padding = card.querySelector("[data-padding-value");
 
-    header.textContent = site.name.toUpperCase();
+    const headerSpan = document.createElement("span");
+    const headerLink = document.createElement("a");
+
+    headerLink.setAttribute("href", `http://www.${site.baseURL}`);
+    headerLink.setAttribute("target", "_blank");
+    headerLink.textContent = site.name.toUpperCase();
+
+    headerSpan.appendChild(headerLink);
+
+    header.appendChild(headerSpan);
     cssSource.value = site.cssURL;
     checkbox.id = site.baseURL;
     padding.value = 0;
@@ -128,42 +138,44 @@ function setOptions(sites) {
 }
 
 function submitSuggestion(siteBaseUrl) {
-  if (siteBaseUrl.trim() !== "") {
-    const title_value = "Request add new site specific CSS for " + siteBaseUrl;
-    const title_param = "&title=" + title_value;
-    const body_param = "&body=" + title_value;
+  if (siteBaseUrl.trim() === "") return;
 
-    window.open(
-      suggestionURL + title_param + body_param,
-      "AddASuggestion",
-      "popup"
-    );
-  }
+  const title_value = `Request add new site specific CSS for ${siteBaseUrl}`;
+  const title_param = `&title=${title_value}`;
+  const body_param = `&body=${title_value}`;
+
+  window.open(
+    suggestionURL + title_param + body_param,
+    "AddASuggestion",
+    "popup"
+  );
+
   suggestionInput.value = "";
 }
 
 function submitIssue(siteBaseUrl) {
-  if (siteBaseUrl.trim() !== "") {
-    const title_value = "Issue with " + siteBaseUrl + " css";
+  if (siteBaseUrl.trim() === "") return;
+  const title_value = "Issue with " + siteBaseUrl + " css";
 
-    const title_param = "title=" + title_value;
-    const body_param = "&body=" + "<!-- describe the issue below -->";
+  const title_param = "title=" + title_value;
+  const body_param = "&body=" + "<!-- describe the issue below -->";
 
-    window.open(issueURL + title_param + body_param, "AddAIssue", "popup");
-  }
+  window.open(issueURL + title_param + body_param, "AddAIssue", "popup");
 }
 
 function setTheme() {
   getSetting("theme").then((result) => {
+    const classList = htmlElement.classList;
+
     if (result) {
-      htmlElement.classList.remove("light");
-      htmlElement.classList.remove("dark");
-      htmlElement.classList.add(result);
+      classList.remove("light");
+      classList.remove("dark");
+      classList.add(result);
     } else {
       chrome.storage.local.set({ theme: "light" }, () => {});
-      htmlElement.classList.remove("light");
-      htmlElement.classList.remove("dark");
-      htmlElement.classList.add("light");
+      classList.remove("light");
+      classList.remove("dark");
+      classList.add("light");
     }
   });
 }
@@ -174,9 +186,11 @@ function addItem() {
   let newLi = document.createElement("li");
   newLi.textContent = text + " ";
   let deleteLink = document.createElement("a");
+
   deleteLink.textContent = "[Delete]";
   deleteLink.href = "#";
   deleteLink.addEventListener("click", deleteItem);
+
   newLi.appendChild(deleteLink);
 
   document.getElementById("blacklist").appendChild(newLi);
