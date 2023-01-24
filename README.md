@@ -1,6 +1,6 @@
-# :: Widify
+# :: WIDIFY
 
-<p><a href="https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc">Widify</a> is a chrome
+<p><a href="https://chrome.google.com/webstore/detail/widify/lleehngfgcgobejafenllbianegnnefc">WIDIFY</a> is a chrome
   extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
 
 Currently supports:
@@ -35,6 +35,11 @@ Currently supports:
 </div>
 
 # Version History
+
+1.0
+Complete redesign
+More site support
+Remote CSS access
 
 0.5.0
 Added search feature
