@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>WIDIFY</title>
+    <link rel="stylesheet" href="options.css" />
+    <script type="module" src="./utils.js"></script>
+    <script type="module" src="./options.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+  </head>
+
+  <body>
+    <div class="options-container">
+      <div class="top-bar">
+        <div class="brand-container">
+          <img src="./images/icon38.png" alt="widify-logo" />
+          <span class="widify-title">WIDIFY</span>
+        </div>
+        <div class="nav-right-side">
+          <div class="dark-light-toggle">
+            <i class="material-icons light-toggle" data-option-light
+              >light_mode</i
+            >
+            <i class="material-icons dark-toggle" data-option-dark>dark_mode</i>
+          </div>
+          <div>
+            <input
+              type="search"
+              class="searchInput"
+              placeholder="Search for site"
+              data-search
+            />
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="option-cards" data-option-cards-container>
+          <div class="card card-suggest">
+            <div class="header-container">
+              <div class="header" data-header>SUGGEST A SITE</div>
+            </div>
+            <div class="body" data-body style="display: flex">
+              <span class="content-padding-option" style="display: grid">
+                <label for="suggestion">
+                  Site base URL (ie: google.com) [! Must be logged into
+                  <a href="https://github.com/login" target="_blank">GitHub</a>
+                  !]:
+                </label>
+                <textarea
+                  id="suggestion"
+                  class="suggestion-value"
+                  rows="5"
+                  data-suggestion-value
+                >
+                </textarea>
+                <button data-suggestion-submit class="btn-suggestion-submit">
+                  SUBMIT
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="option-cards" data-option-cards-container></div>
+        <template data-option-template>
+          <div class="card">
+            <div class="header-container">
+              <div class="header" data-header></div>
+              <label class="switch">
+                <input type="checkbox" data-check />on
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="body" data-body>
+              <span class="content-padding-option">
+                <label for="padding">Content Padding Override:</label>
+                <input
+                  id="padding"
+                  type="number"
+                  class="content-padding-value"
+                  value="0"
+                  data-padding-value
+                />
+                px
+              </span>
+              <span class="css-source-option">
+                <label for="cssSource">Reading CSS from: </label>
+                <textarea
+                  id="cssSource"
+                  class="css-source-value"
+                  disabled
+                  data-css-source-value
+                >
+                </textarea>
+                <button data-issue-submit class="btn-issue-submit">
+                  REPORT
+                </button>
+              </span>
+            </div>
+          </div>
+        </template>
+        <div class="blacklist-card">
+          <div class="card">
+            <div class="header-container">
+              <div class="header">AUTO (UNSTABLE / EXPERIMENTAL)</div>
+              <label class="switch">
+                <input type="checkbox" id="auto" data-auto />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="body">
+              <span>
+                <p class="auto-warning">
+                  !! This option will remove the limitation on ALL elements on a
+                  page, it will NOT differentiate between an element that should
+                  be WIDIFY'D and one that should not. Use this option with
+                  caution as it will cause issues with displayed content. !!
+                </p>
+
+                <label for="txtBlacklist"> Add to Blacklist: </label>
+                <input id="txtBlacklist" type="text" />
+                <button data-add-to-blacklist class="buttonClass">
+                  Add item
+                </button>
+                <ul id="blacklist"></ul>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

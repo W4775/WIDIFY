@@ -1,6 +1,0 @@
-:not(:root):fullscreen .VideoContainer>div{
-    height: calc(100vh * 2) !important;
-    width: calc(100vw * 1.4) !important;
-    left: calc(100vw * -0.2) !important;
-    top: calc(100vh * -0.2) !important;
-}

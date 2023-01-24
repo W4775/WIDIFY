@@ -4,37 +4,43 @@
   extension that allows you to utilize the full width of your wide or ultrawide monitor.</p>
 
 Currently supports:
+- Amazon.com
+- Cars.com
+- Crunchyroll.com
+- DisneyPlus.com*
+- Funimation.com*
+- Gamestop.com
+- GitHub.com
+- Hotels.com
+- Hulu.com*
+- Netflix.com*
+- Reddit.com
+- Slickdeals.net
+- Target.com
+- Twitch.tv*
+- VRV.co*
+- Walmart.com
+- Youtube.com*
 
-<ul>
-  <li>Amazon.com</li>
-  <li>Cars.com</li>
-  <li>Gamestop.com</li>
-  <li>GitHub.com</li>
-  <li>Hotels.com</li>
-  <li>Netflix.com</li>
-  <li>Reddit.com</li>
-  <li>Slickdeals.net</li>
-  <li>Target.com</li>
-  <li>Walmart.com</li>
-  <li>Youtube.com</li>
-</ul>
-<div>
+**WIDIFY only affects the videos for these sites, to view the affects of WIDIFY the videos must be played in theater mode or full screen. Currently videos are cropped to fit screens.**
 
-![Widify-menu](https://user-images.githubusercontent.com/31900031/122291341-b9bbc500-cec2-11eb-8500-5295c3ae829a.jpeg)
 
-</div>
-<div>
+![Light Mode](https://user-images.githubusercontent.com/31900031/214180144-df0cfeb2-07de-4443-a764-00abf24e7afc.png)
 
-![Slickdeals-before](https://user-images.githubusercontent.com/31900031/122291330-b58fa780-cec2-11eb-862e-999810a341e7.jpeg)
+![Dark Mode](https://user-images.githubusercontent.com/31900031/214180161-4e37a0d2-bdf4-4f71-a04a-7b6138c64e49.png)
 
-</div>
-<div>
 
-![Slickdeals-after](https://user-images.githubusercontent.com/31900031/122291334-b7596b00-cec2-11eb-9405-e9a3797d70be.jpeg)
+![AmazonBefore](https://user-images.githubusercontent.com/31900031/214180103-17d24c9a-4c23-4646-bac2-b7c7858313d2.png)
 
-</div>
+![AmazonAfter](https://user-images.githubusercontent.com/31900031/214180115-6e64e9ad-bbda-49a1-9aaf-fcf8235987fa.png)
+
 
 # Version History
+
+1.0
+Complete redesign
+More site support
+Remote CSS access
 
 0.5.0
 Added search feature
